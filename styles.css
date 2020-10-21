@@ -1,0 +1,507 @@
+* {
+    margin: 0;
+    padding: 0;
+    outline: none
+}
+input[type="radio"]{
+    opacity:1;
+    position: fixed;
+    width: 0;
+}
+button{
+    cursor: pointer;
+    background:none;
+    border:none;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+}
+a:link {
+    color: rgb(180, 182, 180);
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: rgb(180, 182, 180);
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: rgb(241, 239, 239);
+    background-color: transparent;
+}
+
+a:active {
+    color: rgb(241, 239, 239);
+    background-color: transparent;
+
+}
+
+ul {
+    list-style-type: none;
+}
+p{
+    text-decoration: none;
+    list-style-type: circle;
+}
+body{
+    margin: 0;
+    font-family: 'Lato', sans-serif;
+    color: white;
+    background-color: black;
+}
+.background{
+    position: absolute;
+    background: linear-gradient(#ffffff00, #000000), url('Assets/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: top;
+    height: 900px;
+    width: 100%;
+    top: 0;
+    z-index: -2;
+}
+
+.container{
+    margin: 30px auto;
+    max-width: 1200px;
+}
+.game-header{
+    display:flex;
+    padding:20px;
+    align-items: center;
+    background: linear-gradient(to bottom,#272727 70%, #181818 100%);;
+    box-shadow: rgb(0, 0, 0) 0px 0px 8px;
+}
+.title{
+    font-size: 2rem;
+    color: rgb(214, 214, 214);
+}
+.logo{
+    height: 150px;
+}
+
+/*Filters list*/
+.filters, .game-list {
+    box-shadow: rgb(0, 0, 0) 0px 0px 8px;
+    background: radial-gradient(#7b7b7be1, #252525ca);
+}
+
+.filter-platform-tags .platform-tag:checked{
+    opacity:1;
+}
+.filter-platform-tags{
+    display:flex;
+    flex-wrap: wrap;
+}
+
+/*Main page list styling*/
+.game-list{
+    display:grid;
+    justify-content: center;
+    background: radial-gradient(#7b7b7ba4, #2525258f);
+    padding:30px;
+    row-gap: 40px;
+    column-gap: 40px;
+    grid-template-columns: repeat(auto-fit, 250px);
+}
+
+.game-item{
+    cursor: pointer;
+    position: relative;
+    max-width: 250px;
+    min-width: 100px;
+    padding:10px;
+    opacity: 1;
+    text-align: center;
+    box-shadow: rgb(0, 0, 0) 0px 0px 8px;
+    background-color: rgb(255, 255, 255);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.game-item::before{
+    content: 'See Details';
+    position: absolute;
+    box-sizing: border-box;
+    text-shadow: rgb(0, 0, 0) 2px 2px 2px;
+    bottom: 10%;
+    left: 50%;
+    border: 3px solid rgb(255, 255, 255);
+    padding: 1rem;
+    transform:translate(-50%,-10%);
+    z-index: 2;
+    opacity:0;
+    display: block;
+    background-color: rgba(0, 0, 0, 0.294);
+}
+
+.game-item:hover::before{
+    opacity: 1;
+}
+
+.game-item, .game-item-remove, .list-image, .game-item::before{
+    transition: 300ms ease-in-out 50ms;
+}
+.list-image{
+    box-shadow:inset 0px 50px 0px 0px #d8d0ce;;
+}
+
+.game-item-remove{
+    top:-5px;
+    right:-5px;
+    opacity: 0;
+    position: absolute;
+    z-index: 1;
+    border-radius:4px;
+    border:1px solid #ffffff;
+    cursor:pointer;
+    color:#ffffff;
+    padding:4px 8px;
+
+
+}
+.game-item .widget-title{
+    font-size: 1.2rem;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 0.5rem;
+    z-index: 1;
+    width: 100%;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+}
+.game-item .widget-img{
+    margin-top:5px;
+}
+
+.game-item:hover{
+    transform: scale(1.10);
+}
+.game-item:hover .list-image{
+    opacity:1;
+}
+.game-item:hover .game-item-remove{
+    background: radial-gradient(#ff0000, #f36d6d);
+    opacity: 1;
+}
+/* Modal styling    */
+.modal-background{
+    position:fixed;
+    display:none;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(2, 1, 1, 0.452);
+}
+.modal-background:hover{
+    cursor: pointer;
+}
+.is-visible{
+    display:block;
+    overflow: hidden;
+}
+
+.modal-content{
+    position: fixed;
+    opacity: 0;
+    top:-50%;
+    margin: 5% 0 ;
+    left: 50%;
+    background: linear-gradient(to bottom, rgb(51, 51, 51) 5%, rgb(102, 102, 102) 100%);
+    width: 800px;
+    padding: 30px;
+    transform: translate(-50%, 0);
+    box-shadow: rgb(0, 0, 0) 0px 0px 8px;
+    z-index: 101;
+    transition: 300ms ease-in-out;
+}
+.modal-show{
+    top: 0;
+    opacity: 1;
+}
+.modal-close{
+    position: absolute;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    color:#ffffff;
+    top:0;
+    font-size: 1.2rem;
+    border-bottom-left-radius: 10px;
+    right:0;
+    width: 60px;
+    height: 25px;
+	box-shadow:inset 0px 1px 0px 0px #cf866c;
+    background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+    
+}
+
+.modal-close:hover {
+	background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+	background-color:#bc3315;
+}
+
+.modal-header{
+    display:flex;
+    height: 10%;
+    padding-top:20px;
+    align-items: center;
+}
+
+.search-bar,.modal-body {
+    color: #000000;
+    
+}
+
+.search-bar{
+    width: 100%;
+    height: 3rem;
+    margin-left: 20px;
+    padding-left: 20px;
+    font-size: 16px;
+    border-style: hidden;
+    border-radius: 40px;
+    outline: none;
+    background-color: #ffffff;
+}
+.modal-body{
+    margin-top:30px;
+    height: 85%;
+    border-radius: 10px;
+}
+
+/* Styling of game widget*/
+.widget-img {
+    position: relative;
+    height: 400px;
+    overflow: hidden;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.widget-img img, .list-image{
+    object-fit: cover;
+    opacity: 0.8;
+    width: 100%;
+    height: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+.widget-img img{
+    opacity: 1;
+}
+
+.widget-title, .widget-img-tags{
+    position: absolute;
+    color: rgb(223, 223, 223);
+    background-color: rgba(26, 24, 21, 0.616);
+}
+
+.widget-title{
+    font-size: 1.5rem;
+    border-bottom-right-radius: 10px;
+    border-top-left-radius: 10px;
+    text-align: center;
+    padding: 1rem;
+    z-index: 1;
+}
+
+.widget-img-tags{
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 10px;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    padding-top: 0.3rem;
+}
+
+.widget-img-tags a{
+    margin-left: 1rem;
+}
+
+.widget-img-tags a:last-child{
+    margin-right: 1rem;
+}
+
+.widget-info-release{
+    font-size:1rem;
+    text-align: left;
+    color: rgb(175, 175, 175);
+}
+
+.widget-info-bar{
+    background-color: rgb(230, 230, 230);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    padding-bottom: 0.25rem;
+}
+
+.widget-description{
+    height: 100px;
+    padding:1rem;
+    text-align: justify;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 5%, rgb(98, 98, 98) 100%);
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.show-full{
+    height: auto;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 5%, rgb(214, 214, 214) 100%);
+}
+
+.see-more{
+    position: absolute;
+    bottom:90px;
+    color: rgb(206, 206, 206);
+    left:50%;
+    transform:translate(-50%,0);
+    width: 40%;
+    font-weight: bold;
+    text-shadow:1px 1px 10px #000000;
+}
+
+.add-to-list{
+    margin-top:20px;
+    width:100%;
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 5%, rgb(156, 155, 155) 100%);
+    padding:1rem;
+}
+
+.add-to-list:hover{
+    color: #61892F;
+}
+
+.add-to-list:active{
+    background: linear-gradient(to bottom, rgb(255, 255, 255) 5%, rgb(100, 100, 100) 100%);
+}
+
+.widget-platform-tags{
+    position: relative;
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.dark{
+    background: linear-gradient(to bottom, rgb(85, 83, 83) 5%, rgb(65, 63, 63) 100%);;
+}
+
+
+/* Styling for different platform tags */
+.platform-tag{
+    border-radius:8px;
+    box-sizing: border-box;
+    text-align: center;
+    display:inline-block;
+    flex-grow:1;
+    opacity:0.5;
+    height: 25px;;
+    cursor:pointer;
+    font-size:0.7rem;
+    font-weight:bold;
+    margin-left:5px;
+    margin-bottom:5px;
+    padding:0 10px;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    text-decoration:none;
+    text-shadow:1px 1px 4px #000000;
+    color:#ffffff;
+}
+.widget-platform-tags input[type="radio"]:checked + label, .filter-platform-tags input[type="radio"]:checked + label{
+    opacity:1;
+}
+.playstation4,.playstation3 {
+	background:linear-gradient(to bottom, #3e839c 5%, #368cdd 100%);
+}
+.pc {
+	background:linear-gradient(to bottom, #797979 5%, #e2e8ee 100%);
+}
+.playstation5 {
+	background:linear-gradient(to bottom, #dddddd 5%, #9c9c9c 100%);
+}
+.xbox-one {
+	background:linear-gradient(to bottom, #444444 5%, #2a2a2a 100%);
+}
+.xbox-series-x {
+	background:linear-gradient(to bottom, #444444 5%, #2a2a2a 100%);
+}
+.nintendo-switch {
+    background:linear-gradient(to bottom, #fd3535 5%, #fb7e7e 100%);
+}
+
+.ios, .nintendo-ds {
+	background:linear-gradient(to bottom, #ffffff 5%, #ffffff 100%);
+    color:#000000;
+    border: 1px solid black;
+    text-shadow:0px 1px 0px #ffffff;
+}
+.android {
+	background:linear-gradient(to bottom, #3fd34b 5%, #69e473 100%);
+}
+.nintendo-3ds {
+	background:linear-gradient(to bottom, #ff0000 5%, #242424 100%);
+}
+.xbox360 {
+	background:linear-gradient(to bottom, #a7a7a7 5%, #a2ff93 100%);
+}
+.xbox-old {
+	background:linear-gradient(to bottom, #222121 5%, #0e6b00 100%);
+}
+.playstation1 {
+	background:linear-gradient(to bottom, #585858 5%, #616161 100%);
+}
+.playstation2 {
+	background:linear-gradient(to bottom, #0003aa 5%, #7572ff 100%);
+}
+.gamecube {
+	background:linear-gradient(to bottom, #7134ff 5%, #b7b6ff 100%);
+}
+.nintendo-64 {
+	background:linear-gradient(to bottom, #0003b8 5%, #ff0000 50%, #218f00 90%);
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+    .container{
+        margin: 30px 30px;
+    }
+}
+@media (max-width: 1000px) {
+    .modal-content{
+    width: 80%;
+    }
+    .widget-title{
+        font-size: 1rem;
+    }
+    .title{
+        font-size: 1.5rem;
+    }
+    .widget-info-release{
+        font-size: 0.7rem;
+    }
+    .search-bar{
+        height: 2rem;
+    }
+}
+@media (max-width: 675px) {
+    .game-list{
+        grid-template-columns: 1fr;
+    }
+    .game-item{
+        max-width: none;
+        min-width: none;
+    }
+
+    .logo{
+        height: 100px;
+    }
+}

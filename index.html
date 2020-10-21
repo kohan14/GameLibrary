@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="loader.css">
+    <script src="https://kit.fontawesome.com/d4858432ec.js" crossorigin="anonymous"></script>
+    <script src="Alert.js"defer></script>
+    <script src="LocalStorage.js"defer></script>
+    <script src="GameApi.js"defer></script>
+    <script src="Ui.js"defer></script>
+    <script src="App.js"defer></script>
+    <title>Game Library</title>
+</head>
+<body>
+    <div class="container">
+        <header class="game-header">
+            <a href=""><img class="logo" src="Assets/Game_library_logo_green.png" alt=""></a>
+            <div class="title">Gaming <span style="color: #6B6E70;">Library</span></div>
+            <button class="add-game" data-modal="open">add game</button>
+            <button class="test-button">TEST BTN</button>
+        </header>
+        <br>
+        <section class="filters">
+            <input type="text" class="filter-bar">
+            <div class="filter-platform-tags" id="filter-tags">
+                <input type="radio" id="filter-show-all" name="filter-tag" value="show-all">
+                <label for="filter-show-all" class="platform-tag playstation4">SHOW ALL</label>
+            </div>
+        </section>
+        <br>
+        <section class="game-list">
+            <!-- Here goes game items -->
+        </section>
+    </div>
+
+    <div class="background"></div>
+
+</body>
+</html>
