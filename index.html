@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="loader.css">
+    <link rel="stylesheet" href="Loader.css">
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js" defer></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
     <script src="https://kit.fontawesome.com/d4858432ec.js" crossorigin="anonymous"></script>
-    <script src="Alert.js"defer></script>
     <script src="LocalStorage.js"defer></script>
     <script src="GameApi.js"defer></script>
     <script src="Ui.js"defer></script>
@@ -19,15 +21,54 @@
         <header class="game-header">
             <a href=""><img class="logo" src="Assets/Game_library_logo_green.png" alt=""></a>
             <div class="title">Gaming <span style="color: #6B6E70;">Library</span></div>
-            <button class="add-game" data-modal="open">add game</button>
-            <button class="test-button">TEST BTN</button>
         </header>
         <br>
+        <!-- RADIO BUTTONS FOR FILTERS -->
         <section class="filters">
-            <input type="text" class="filter-bar">
+            <div class="filter-group">
+                <input type="text" class="filter-bar" placeholder="Search through your games">
+                <div class="filter-button-group">
+                    <button class="add-game" data-modal="open">Add Game</button>
+                    <button class="test-button">Test App</button>
+                </div>
+            </div>
             <div class="filter-platform-tags" id="filter-tags">
-                <input type="radio" id="filter-show-all" name="filter-tag" value="show-all">
+                <input type="radio" id="filter-show-all" name="filter-tag" value="show-all" checked>
                 <label for="filter-show-all" class="platform-tag playstation4">SHOW ALL</label>
+                <input type="radio" id="filter-pc" name="filter-tag" value="pc">
+                <label for="filter-pc" class="platform-tag pc">PC</label>
+                <input type="radio" id="filter-playstation5" name="filter-tag" value="playstation5">
+                <label for="filter-playstation5" class="platform-tag playstation5">PLAYSTATION5</label>
+                <input type="radio" id="filter-xbox-one" name="filter-tag" value="xbox-one">
+                <label for="filter-xbox-one" class="platform-tag xbox-one">XBOX-ONE</label>
+                <input type="radio" id="filter-playstation4" name="filter-tag" value="playstation4">
+                <label for="filter-playstation4" class="platform-tag playstation4">PLAYSTATION4</label>
+                <input type="radio" id="filter-xbox-series-x" name="filter-tag" value="xbox-series-x">
+                <label for="filter-xbox-series-x" class="platform-tag xbox-series-x">XBOX-SERIES-X</label>
+                <input type="radio" id="filter-nintendo-switch" name="filter-tag" value="nintendo-switch">
+                <label for="filter-nintendo-switch" class="platform-tag nintendo-switch">NINTENDO-SWITCH</label>
+                <input type="radio" id="filter-ios" name="filter-tag" value="ios">
+                <label for="filter-ios" class="platform-tag ios">IOS</label>
+                <input type="radio" id="filter-android" name="filter-tag" value="android">
+                <label for="filter-android" class="platform-tag android">ANDROID</label>
+                <input type="radio" id="filter-nintendo-3ds" name="filter-tag" value="nintendo-3ds">
+                <label for="filter-nintendo-3ds" class="platform-tag nintendo-3ds">NINTENDO-3DS</label>
+                <input type="radio" id="filter-nintendo-ds" name="filter-tag" value="nintendo-ds">
+                <label for="filter-nintendo-ds" class="platform-tag nintendo-ds">NINTENDO-DS</label>
+                <input type="radio" id="filter-xbox360" name="filter-tag" value="xbox360">
+                <label for="filter-xbox360" class="platform-tag xbox360">XBOX360</label>
+                <input type="radio" id="filter-xbox-old" name="filter-tag" value="xbox-old">
+                <label for="filter-xbox-old" class="platform-tag xbox-old">XBOX-OLD</label>
+                <input type="radio" id="filter-playstation3" name="filter-tag" value="playstation3">
+                <label for="filter-playstation3" class="platform-tag playstation3">PLAYSTATION3</label>
+                <input type="radio" id="filter-playstation1" name="filter-tag" value="playstation1">
+                <label for="filter-playstation1" class="platform-tag playstation1">PLAYSTATION1</label>
+                <input type="radio" id="filter-playstation2" name="filter-tag" value="playstation2">
+                <label for="filter-playstation2" class="platform-tag playstation2">PLAYSTATION2</label>
+                <input type="radio" id="filter-gamecube" name="filter-tag" value="gamecube">
+                <label for="filter-gamecube" class="platform-tag gamecube">GAMECUBE</label>
+                <input type="radio" id="filter-nintendo-64" name="filter-tag" value="nintendo-64">
+                <label for="filter-nintendo-64" class="platform-tag nintendo-64">NINTENDO-64</label>
             </div>
         </section>
         <br>
@@ -35,8 +76,6 @@
             <!-- Here goes game items -->
         </section>
     </div>
-
     <div class="background"></div>
-
 </body>
 </html>

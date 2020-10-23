@@ -155,18 +155,7 @@ class UI {
             <div class="widget-description" id="modal-widget-description">
                 <p class="description-content" id="modal-description-content">${description}</p>
             </div>
-            <button class="add-to-list" type="submit" form="platform-form">ADD GAME TO LIST</button>`;     
-
-        const descriptionParagraph = document.querySelector('#modal-description-content');
-        const descriptionContainer = document.querySelector('#modal-widget-description');
-
-        if(descriptionParagraph.getBoundingClientRect().height > descriptionContainer.getBoundingClientRect().height-10){
-            const seeMoreButton = document.createElement('button');
-            seeMoreButton.classList.add('see-more');
-            seeMoreButton.id = 'modal-see-more';
-            seeMoreButton.innerHTML = `See more<i class="fas fa-angle-double-down" style="margin-left:10px;"></i>`
-            this.modalBody.appendChild(seeMoreButton);
-        }
+            <button class="add-to-list" type="submit" data-modal="close" form="platform-form">ADD GAME TO LIST</button>`;     
     }
 
     //If api returns undefined, game not found
@@ -188,11 +177,27 @@ class UI {
 
     //Get all of the games from local storage and append them to game list
     getGames(array){
-        array.forEach((game) =>{
+        array.forEach((game) => {
             const gameEL = this.createGameElement(game);
             this.gameListEL.appendChild(gameEL);
+
+            gameEL.addEventListener('click', (e) => {
+                //Exclude delete button before opening modal
+                if(!e.target.classList.contains('game-item-remove')){
+                    toggleModal(e.currentTarget);
+                    loadModal(game);
+                    loadModalContentEventListeners(game);
+                }
+            })
+
+            //Add delete button
+            gameEL.children[1].addEventListener('click', (e) => {
+                ls.removeGame(e);
+                e.stopPropagation();
+            })
         })
     }
+    
 
     // Create element for game-list on main page
     createGameElement(game){
@@ -224,27 +229,5 @@ class UI {
         canvas.width = containerHeight * aspectRatio;
         ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
         return canvas;
-    }
-
-    getArrayOfPlatformTagElements(){
-        const platformsSlugs = ["pc","playstation5","xbox-one","playstation4",
-        "xbox-series-x","nintendo-switch","ios","android",
-        "nintendo-3ds","nintendo-ds","xbox360","xbox-old",
-        "playstation3","playstation1","playstation2","gamecube",
-        "nintendo-64"]
-        const array = platformsSlugs.map((slug) => {
-            const tagEL = document.createElement('input');
-            const label = document.createElement('label');
-            label.name = 'filter-tag';
-            label.htmlFor = `filter-${slug}`;
-            label.textContent = slug.toUpperCase();
-            label.className = `platform-tag ${slug}`;
-            tagEL.type = 'radio';
-            tagEL.id = `filter-${slug}`;
-            tagEL.name = 'filter-tag';
-            tagEL.value = slug;
-            return {tagEL, label};
-        })
-        return array;
     }
 }

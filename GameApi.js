@@ -39,7 +39,7 @@ class GameApi {
         //Filter through poorly documented games that are not worth showing up
         if(gameDetails.background_image === null || gameDetails.description_raw == ''){
             return undefined;
-        }else{
+        }else {
             return gameDetails;
         }
     }

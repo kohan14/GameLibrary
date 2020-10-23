@@ -1,75 +1,84 @@
 
-//// DOM ELEMENTS
+//// Instantiate objects
 const api = new GameApi;
 const ui = new UI;
 const ls = new GameStorage;
 
+// Load games from memory and insert them into the DOM
 ui.getGames(ls.storedGames);
-const array = ui.getArrayOfPlatformTagElements();
 
-
+//Dom Elements
 const addButtonEL = document.querySelector('.add-game');
 const background = document.querySelector('.background');
 const gameItemRemoveBtnsEL = document.querySelectorAll('.game-item-remove');
 const gameListImages = document.querySelectorAll('#list-image')
 const gameItems = document.querySelectorAll('.game-item');
-const filterTagContainer = document.querySelector('#filter-tags');
-
-array.forEach((element) => {
-    filterTagContainer.appendChild(element.tagEL);
-    filterTagContainer.appendChild(element.label);
-})
-
+const filterTagContainer = document.getElementsByName('filter-tag');
+const gameList = document.querySelector('.game-list');
+const testBtn = document.querySelector('.test-button');
+const searchInput = document.querySelector('.filter-bar');
 
 // Timer for keyinput delay when using searchbar inside modal,
 const timer = '';
 
-const testBTN = document.querySelector('.test-button');
-testBTN.addEventListener('click', () => {
-    const SelectedBTNS = document.querySelectorAll('.nintendo-switch');
-    SelectedBTNS.forEach( (button) => {
-        button.style.display = 'none'
-    })
-})
-
 // Loading core event listeners, for main page of the app
-domLoadedEventListeners();
+domLoadEventListeners();
 
 
 //All event listeners that need to be loaded immediately
-function domLoadedEventListeners(){
-    //const filterRadios = document.get('filter-tag');
-    console.log(filterTagContainer.children);
+function domLoadEventListeners(){
+
     // Button modal toggle
-    addButtonEL.addEventListener('click', (e) => toggleModal(e))
+    addButtonEL.addEventListener('click', (e) => toggleModal(e.target))
 
-    // Event listeners for deleting each of the game from list 
-    gameItemRemoveBtnsEL.forEach((btn) => {
-        btn.addEventListener('click', (e) => {
-            ls.removeGame(e);
-            e.stopPropagation();
-        })
+    // Test data to try out app
+    testBtn.addEventListener('click', () => {
+        ls.loadTestData();
+        location.reload();
     })
 
-    // Event for every game item button click to open modal
-    gameItems.forEach((game, index) => {
-        game.addEventListener('click', (e) => {
-                //Exclude delete button before opening modal
-                if(!e.target.classList.contains('game-item-remove')){
-                    toggleModal(e);
-                    loadModal(ls.storedGames[index]);
-                    loadModalContentEventListeners(ls.storedGames[index]);
+    //Filter radio buttons
+    filterTagContainer.forEach( (radio) => {
+        radio.addEventListener('click', (e) => {
+            if(e.target.value !== 'show-all')
+            {
+                const filteredGames = ls.storedGames.filter( (game) => {
+                    return game.checkedPlatform === e.target.value;
+                })
+                if(filteredGames != ''){
+                    gameList.innerHTML = ``;
+                    ui.getGames(filteredGames);
+                    convertToCanvas();
+                }else {
+                    alertify.alert('STORAGE ERROR','There\'s not game matching this platform in your library');
                 }
+
+            }else {
+                gameList.innerHTML = ``;
+                ui.getGames(ls.storedGames);
+                convertToCanvas();
+            }
+
         })
     })
 
-    //Filter games by tags
-
-
-
+    //Search through games on library list
+    searchInput.addEventListener('keyup', (e) => {
+        const gameItems = document.querySelectorAll('.game-item');
+        const filteredPhrase = e.target.value.toLowerCase();
+        gameItems.forEach((game) => {
+            const gameName = game.children[0].firstElementChild.textContent;
+            if(gameName.toLowerCase().indexOf(filteredPhrase) != -1) {
+                game.style.display = 'block';
+            }
+            else{
+                game.style.display = 'none';
+            }
+        })
+    })
 }
 
-// All event listeners that require modal to be inside of the viewport to work. 
+// All event listeners that require modal to be inside of the viewport to work.
 function loadModalEventListeners(){
 
     // Searching games through search bar and adding modal content. setTimeout used to avoid making HTTP Requests each keyup (for better performance)
@@ -79,10 +88,10 @@ function loadModalEventListeners(){
     })
 
     // Toggling modal off by clicking in background
-    ui.modalBackground.addEventListener('click', (e) => toggleModal(e));
+    ui.modalBackground.addEventListener('click', (e) => toggleModal(e.target));
 
     // Toggling modal off by clicking in background
-    ui.modalCloseBtn.addEventListener('click', (e) => toggleModal(e));
+    ui.modalCloseBtn.addEventListener('click', (e) => toggleModal(e.target));
 }
 
 function loadModalContentEventListeners(gameDetails){
@@ -91,13 +100,9 @@ function loadModalContentEventListeners(gameDetails){
     const widgetSeeMoreBtn = document.querySelector('#modal-see-more');
     const addGameForm = document.querySelector('#platform-form');
 
-    if(widgetSeeMoreBtn !== null){
-        //Toggle full description Btn
-        widgetSeeMoreBtn.addEventListener('click', (e) => autoContainerHeight(e, '#modal-widget-description'));
-    }
-
-    //ADD game modal event listener
+    //Check game platform feature in modal
     addGameForm.addEventListener('submit', (e) => {
+
         //Get radio buttons
         const platformRadios = document.getElementsByName('platforms');
         let checkedPlatform;
@@ -109,14 +114,25 @@ function loadModalContentEventListeners(gameDetails){
                 checkedPlatform = radio.value;
             }
         });
-        
-        //Check if the user checked any of the buttons, if not set alert
-        if(checkedPlatform !== undefined){
-            gameDetails.checkedPlatform = checkedPlatform;
-            console.log(gameDetails.checkedPlatform);
-            ls.addGame(gameDetails);
+
+        //Check if the user checked any of the buttons, or the game is already on the list (provide alerts)
+        if(checkedPlatform === undefined){
+            if(ls.checkForDuplicates(gameDetails.id, 'id', ls.storedGames)){
+                alertify.alert('STORAGE ERROR', 'The game is already on the list, please pick another title');
+            }else {
+                alertify.alert('PLATFORM ERROR', 'Please check platform before adding game to the library');
+            }
         }else {
-            alert('Please select your platform');
+            //Add property checked for further styling
+            gameDetails.checkedPlatform = checkedPlatform;
+            ls.addGame(gameDetails);
+            toggleModal(e.submitter);
+            //Add to DOM
+            const element = ui.createGameElement(gameDetails);
+            gameList.appendChild(element);
+            //Convert Images
+            convertToCanvas(element.children[0].children[1])
+            alertify.success(`${gameDetails.name} successfully added!`);
         }
     })
 }
@@ -124,25 +140,18 @@ function loadModalContentEventListeners(gameDetails){
 
 /////////// FUNCTIONS FOR EVENT LISTENERS
 
-// Set widget description container height to auto
-function autoContainerHeight(e, elementID) {
-    const descriptionContainer = document.querySelector(elementID);
-    descriptionContainer.classList.add('show-full');
-    e.target.remove();
-}
-
 //Toggle modal
 function toggleModal(e) {
 
     //If event target is modal wrapper or close btn, then we are togglingOff Modal - otherwise opening
-    if(e.currentTarget.dataset.modal === 'close'){
+    if(e.dataset.modal === 'close'){
         clearTimeout(this.timer)
         ui.modalAnimate();
         setTimeout(() => {
             ui.deleteModal();
         }, 200);
     }
-    if (e.currentTarget.dataset.modal === 'open') {
+    if (e.dataset.modal === 'open') {
         ui.createModal(background);
         ui.refreshSelectors();
         setTimeout(() => {
@@ -161,11 +170,11 @@ function searchGame(e) {
         this.timer = setTimeout(() =>{
             api.searchGameInfo(e.target.value)
               .then(gameId => {
-                    api.getDetails(gameId)  
+                    api.getDetails(gameId)
                       .then((gameDetails => {
                             loadModal(gameDetails);
                             resolve(gameDetails);
-                      }))
+                        }))
                       //If api has no image or description catch undefined (to filter through some less quality results)
                       .catch(() => ui.createGameNotFound())
               })
@@ -185,12 +194,22 @@ function loadModal(gameDetails) {
 // Not very elegant fix for canvas pictures sometimes not loading ...
 window.onload = function() {
     //get each photo for games in library, then resize them and insert in the place of those fetched by api
-    gameListImages.forEach((image) => {
-        const canvas = ui.imageResize(250, image);
-        canvas.classList.add('list-image');
-        image.parentElement.appendChild(canvas);
-        image.remove();
-    })
+    convertToCanvas();
 }
 
-ls.checkPlatforms();
+function convertToCanvas(param){
+    if(param === undefined){
+        const images = document.querySelectorAll('#list-image')
+        images.forEach((image) => {
+            const canvas = ui.imageResize(250, image);
+            canvas.classList.add('list-image');
+            image.parentElement.appendChild(canvas);
+            image.remove();
+        })
+    }else{
+        const canvas = ui.imageResize(250, param);
+        canvas.classList.add('list-image');
+        param.parentElement.appendChild(canvas);
+        param.remove();
+    }
+}

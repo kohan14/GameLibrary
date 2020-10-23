@@ -1,9 +1,0 @@
-class Alert {
-    constructor() {
-        
-    }
-
-    confirm(){
-        
-    }
-}
