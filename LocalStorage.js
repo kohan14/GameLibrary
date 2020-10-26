@@ -15,7 +15,7 @@
     removeGame(e){
         const gameNameNode = e.currentTarget.parentNode.children[0].children[0].textContent;
         const thisTarget = e.currentTarget;
-        alertify.confirm(`DELETE PROMPT`, `Do you want to delete ${gameNameNode} form your library?`,
+        alertify.confirm(`DELETE PROMPT`, `Do you want to delete ${gameNameNode} from your library?`,
                 () => {
                     alertify.error(`${gameNameNode} successfully deleted!`);
                     this.storedGames.forEach((game, index) => {

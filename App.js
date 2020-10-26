@@ -49,7 +49,7 @@ function domLoadEventListeners(){
                     ui.getGames(filteredGames);
                     convertToCanvas();
                 }else {
-                    alertify.alert('STORAGE ERROR','There\'s not game matching this platform in your library');
+                    alertify.alert('STORAGE ERROR','There\'s no game matching this platform in your library');
                 }
 
             }else {
