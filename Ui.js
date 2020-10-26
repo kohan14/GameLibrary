@@ -177,6 +177,7 @@ class UI {
 
     //Get all of the games from local storage and append them to game list
     getGames(array){
+        this.gameListEL.innerHTML ='';
         array.forEach((game) => {
             const gameEL = this.createGameElement(game);
             this.gameListEL.appendChild(gameEL);

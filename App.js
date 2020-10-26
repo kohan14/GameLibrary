@@ -123,16 +123,18 @@ function loadModalContentEventListeners(gameDetails){
                 alertify.alert('PLATFORM ERROR', 'Please check platform before adding game to the library');
             }
         }else {
+            if(!ls.checkForDuplicates(gameDetails.id, 'id', ls.storedGames))
+            {
             //Add property checked for further styling
             gameDetails.checkedPlatform = checkedPlatform;
             ls.addGame(gameDetails);
             toggleModal(e.submitter);
-            //Add to DOM
-            const element = ui.createGameElement(gameDetails);
-            gameList.appendChild(element);
-            //Convert Images
-            convertToCanvas(element.children[0].children[1])
+            ui.getGames(ls.storedGames)
             alertify.success(`${gameDetails.name} successfully added!`);
+            convertToCanvas(gameList.lastElementChild.children[0].children[1])
+            }else{
+                alertify.alert('STORAGE ERROR', 'The game is already on the list, please pick another title')
+            }
         }
     })
 }

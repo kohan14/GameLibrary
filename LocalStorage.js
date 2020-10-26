@@ -28,18 +28,6 @@
                     },
                 () => {
                 });
-
-        // if(confirm(`Are you sure you want do delete ${gameNameNode} ?`))
-        // {
-        //     this.storedGames.forEach((game, index) => {
-        //         if(gameNameNode === game.name)
-        //         {
-        //             this.storedGames.splice(index, 1);
-        //         }
-        //     })
-        //     localStorage.setItem('games', JSON.stringify(this.storedGames));
-        //     e.currentTarget.parentNode.remove();
-        // }
     }
 
     loadTestData(){
