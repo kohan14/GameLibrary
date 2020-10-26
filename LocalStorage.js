@@ -31,7 +31,8 @@
     }
 
     loadTestData(){
-        fetch('/dummyData.json').then((data) => data.json()).then((games) => localStorage.setItem('games', JSON.stringify(games)))
+        const dataObj = new DummyData
+        localStorage.setItem('games', JSON.stringify(dataObj.data))
     }
 
     // Helper methods

@@ -1,4 +1,3 @@
-
 //// Instantiate objects
 const api = new GameApi;
 const ui = new UI;

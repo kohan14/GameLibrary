@@ -40,7 +40,11 @@ class GameApi {
         if(gameDetails.background_image === null || gameDetails.description_raw == ''){
             return undefined;
         }else {
-            return gameDetails;
+            //Get only few of properties that we will be using in app
+            const filteredProperties = (({platforms, id, name, description_raw, released, background_image, website, reddit_url}) => ({
+                platforms, id, name, description_raw, released, background_image, website, reddit_url}))(gameDetails);
+
+            return filteredProperties;
         }
     }
 }
